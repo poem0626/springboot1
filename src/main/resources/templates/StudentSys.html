@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8">
+		<title>学生奖罚管理系统</title>
+		<link rel="stylesheet" href="../../css/bootstrap.min.css" />
+	</head>
+	<body>
+		<div class="container alert-info">
+			<div class="row">
+				<div class="col-lg-12">
+					<h3>学生奖罚管理系统 | 欢迎您，<span class="alert-danger" th:text="${session.USERS.uname}"></span> | <a href="">注销</a></h3>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-2">
+					<div class="list-group">
+					  <a th:href="@{/c/stu/stuList(p=1,s=3,stuCode=0)}" class="list-group-item">学生列表</a>
+					  <a th:href="@{/c/stu/reList?p=1&s=3&stuCode=10&name=null&sname=null}" class="list-group-item">奖惩管理</a>
+					  <a href="#" class="list-group-item">退出系统</a>
+					</div>
+				</div>
+				<div class="col-lg-10">
+					<h3 class="text-center">学生信息</h3>
+					<table class="table table-hover table-bordered text-center">
+						<thead>
+							<tr>
+								<td>学号</td>
+								<td>姓名</td>
+								<td>职务</td>
+								<td>专业</td>
+								<td>班级</td>
+								<td>性别</td>
+								<td>生日</td>
+								<td>电话</td>
+								<td>操作</td>
+							</tr>
+						</thead>
+						<tbody th:remove="${PAGE_INFO.list.size()==0 ? 'none' : 'all-but-first'}">
+							<tr class="danger" th:each="it,iter : ${PAGE_INFO.list}">
+								<td th:text="${it.code}"></td>
+								<td th:text="${it.name}"></td>
+								<td>
+									<div th:switch="${it.job}">
+										<span th:case="1">普通学生</span>
+										<span th:case="2">组长</span>
+										<span th:case="3">班长</span>
+									</div>
+								</td>
+								<td>
+									<div th:switch="${it.major}">
+										<span th:case="1">计算机</span>
+										<span th:case="2">电气</span>
+										<span th:case="3">金融</span>
+									</div>
+								</td>
+								<td th:text="${it.grade}">312</td>
+								<td>
+									<div th:switch="${it.sex}">
+										<span th:case="1">男</span>
+										<span th:case="2">女</span>
+									</div>
+								</td>
+								<td th:text="${#dates.format(it.birthday,'yyyy年MM月dd日')}"></td>
+								<td th:text="${it.tel}"></td>
+								<td><a th:href="@{/c/stu/stuList(p=${PAGE_INFO.pageNum},s=${PAGE_INFO.pageSize},stuCode=${it.code})}">查看</a></td>
+							</tr>
+							<tr><td colspan="9" class="text-center" style="color:red">暂无数据！</td></tr>
+						</tbody>
+						<tfoot>
+							<tr>
+								<td colspan="9">当前是第<span th:text="${PAGE_INFO.pageNum}"></span>页，共<span  th:text="${PAGE_INFO.pages}"></span>页,
+									<a th:href="@{/c/stu/stuList(p=${PAGE_INFO.prePage},s=${PAGE_INFO.pageSize})}">上一页</a>|
+									<a th:href="@{/c/stu/stuList(p=${PAGE_INFO.nextPage},s=${PAGE_INFO.pageSize})}">下一页</a>
+								</td>
+							</tr>
+						</tfoot>
+					</table>
+					<table th:unless="${RecordList.list.size()==0}" class="table table-hover table-bordered text-center" >
+						<thead>
+							<tr >
+								<td>序号</td>
+								<td>奖惩</td>
+								<td>学生姓名</td>
+								<td>创建人</td>
+								<td>描述</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="danger" th:each="it,iter : ${RecordList.list}">
+								<td th:text="${iter.count}"></td>
+								<td th:text="${it.name}"></td>
+								<td th:text="${it.sname}"></td>
+								<td th:text="${it.createBy}"></td>
+								<td th:text="${it.des}"></td>
+							</tr>
+						</tbody>
+					</table>			
+				</div>
+			</div>
+			
+		</div>
+	</body>
+<script type="text/javascript" src="../../js/jquery-1.12.4.js"></script>
+<script>
+	
+</script>
+</html>

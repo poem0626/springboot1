@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.accp.SpringBootWork_2.dao.RecordDAO">
+  <resultMap id="BaseResultMap" type="com.accp.SpringBootWork_2.pojo.Record">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="stuCode" jdbcType="VARCHAR" property="stuCode" />
+    <result column="createDate" jdbcType="DATE" property="createDate" />
+    <result column="createBy" jdbcType="VARCHAR" property="createBy" />
+    <result column="des" jdbcType="VARCHAR" property="des" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, `name`, stuCode, createDate, createBy, des
+  </sql>
+  <select id="selectByPrimaryKey" resultType="RecordVo">
+		SELECT *,s.`name` AS sname FROM `t_record` AS r
+		JOIN `t_student` AS s ON r.`stuCode`=s.`code`
+		<where>
+			<if test="stuCode!=10">
+				r.`stuCode`=#{stuCode} 
+			</if>
+			<if test="name!=null">
+				AND r.`name` LIKE '%${name}%' 
+			</if>
+			<if test="sname!=null">
+				AND s.`name` LIKE '%${sname}%' 
+			</if>
+		</where>
+  </select>
+  <select id="getRecord" resultType="Record">
+  	select * from t_record where id=#{id}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_record
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.accp.SpringBootWork_2.pojo.Record">
+    insert into t_record (id, `name`, stuCode, 
+      createDate, createBy, des
+      )
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{stuCode,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=DATE}, #{createBy,jdbcType=VARCHAR}, #{des,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.accp.SpringBootWork_2.pojo.Record">
+    insert into t_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        `name`,
+      </if>
+      <if test="stuCode != null">
+        stuCode,
+      </if>
+      <if test="createDate != null">
+        createDate,
+      </if>
+      <if test="createBy != null">
+        createBy,
+      </if>
+      <if test="des != null">
+        des,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="stuCode != null">
+        #{stuCode,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=DATE},
+      </if>
+      <if test="createBy != null">
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="des != null">
+        #{des,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.accp.SpringBootWork_2.pojo.Record">
+    update t_record
+    <set>
+      <if test="name != null">
+        `name` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="stuCode != null">
+        stuCode = #{stuCode,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        createDate = #{createDate,jdbcType=DATE},
+      </if>
+      <if test="createBy != null">
+        createBy = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="des != null">
+        des = #{des,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.accp.SpringBootWork_2.pojo.Record">
+    update t_record
+    set `name` = #{name,jdbcType=VARCHAR},
+      stuCode = #{stuCode,jdbcType=VARCHAR},
+      createDate = #{createDate,jdbcType=DATE},
+      createBy = #{createBy,jdbcType=VARCHAR},
+      des = #{des,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
